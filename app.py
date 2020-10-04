@@ -22,7 +22,7 @@ class Application_ui(Frame):
 
     def __init__(self, master=None):
         Frame.__init__(self, master)
-        self.master.title('Excel转化Rpy工具')
+        self.master.title('Excel2DDLCMod')
         self.master.geometry('600x343')
         self.createWidgets()
 
@@ -34,41 +34,46 @@ class Application_ui(Frame):
         self.background_label = Label(self.top, image=self.bkg_gif)
         self.background_label.place(x=0, y=0, relwidth=1, relheight=1)
 
-        self.Text = Text(self.top, font=('宋体', 9))
+        self.Text = Text(self.top, font=('微软雅黑', 9))
         self.Text.place(relx=0.066, rely=0.07, relwidth=0.869, relheight=0.563)
+        # self.Text.insert(END, "Excel2DDLCMod by DokiMod\n基于凉宫春日应援团的 Excel2RpyScript 开发\n")
 
-        self.saveAddr = Entry(self.top, font=('宋体', 9))
+        self.saveAddr = Entry(self.top, font=('微软雅黑', 9))
         self.saveAddr.place(relx=0.355, rely=0.84, relwidth=0.409, relheight=0.052)
 
         self.ComboList = ['源文件目录', '自定义目录']
-        self.Combo = Combobox(self.top, values=self.ComboList, font=('宋体', 9), state='readonly')
+        self.Combo = Combobox(self.top, values=self.ComboList, font=('微软雅黑', 9), state='readonly')
         self.Combo.place(relx=0.184, rely=0.84, relwidth=0.146, relheight=0.058)
         self.Combo.set(self.ComboList[0])
         self.Combo.bind('<<ComboboxSelected>>', self.comboEvent)
 
-        self.style.configure('InputButton.TButton', font=('宋体', 9))
+        self.style.configure('InputButton.TButton', font=('微软雅黑', 9))
         self.InputButton = Button(self.top, text='浏览', command=self.InputButton_Cmd, style='InputButton.TButton')
         self.InputButton.place(relx=0.184, rely=0.7, relwidth=0.133, relheight=0.073)
 
         self.Haruhi_gif = PhotoImage(data=base64.b64decode(haruhi_gif_data))
-        self.style.configure('ConvertButton.TButton', font=('宋体', 9))
+        self.style.configure('ConvertButton.TButton', font=('微软雅黑', 9))
         self.ConvertButton = Button(self.top, image=self.Haruhi_gif, command=self.ConvertButton_Cmd,
                                     style='ConvertButton.TButton')
         self.ConvertButton.place(relx=0.788, rely=0.7, relwidth=0.146, relheight=0.236)
 
-        self.style.configure('OutputLabel.TLabel', anchor='w', font=('宋体', 9))
+        self.style.configure('OutputLabel.TLabel', anchor='w', font=('微软雅黑', 9))
         self.OutputLabel = Label(self.top, text='保存目录：', style='OutputLabel.TLabel')
         self.OutputLabel.place(relx=0.066, rely=0.84, relwidth=0.107, relheight=0.05)
 
-        self.style.configure('InputLabel.TLabel', anchor='w', font=('宋体', 9))
+        self.style.configure('InputLabel.TLabel', anchor='w', font=('微软雅黑', 9))
         self.InputLabel = Label(self.top, text='输入设置：', style='InputLabel.TLabel')
         self.InputLabel.place(relx=0.066, rely=0.723, relwidth=0.107, relheight=0.05)
 
         menubar = Menu(self.top)
         filemenu = Menu(menubar, tearoff=0)  # tearoff意为下拉
+        moremenu = Menu(menubar, tearoff=0)  # tearoff意为下拉
         menubar.add_cascade(label='帮助', menu=filemenu)
         filemenu.add_command(label='视频教程', command=self.open_help_url)
         filemenu.add_command(label='检查更新', command=self.check_for_update)
+        menubar.add_cascade(label='更多', menu=moremenu)
+        moremenu.add_command(label='关于 Excel2DDLCMod', command=self.open_about)
+        moremenu.add_command(label='DokiMod 官网', command=self.open_dokimod)
 
         self.top.config(menu=menubar)
 
@@ -124,7 +129,7 @@ class Application(Application_ui):
 
     def InputButton_Cmd(self, event=None):
         file_paths = filedialog.askopenfilenames(title=u'选择文件',
-                                                 filetypes=[("Excel-2007 file", "*.xlsx"), ("Excel-2003 file", "*.xls"),
+                                                 filetypes=[("Excel 2007 file", "*.xlsx"), ("Excel 2003 file", "*.xls"),
                                                             ("all", "*.*")])
         for line in file_paths:
             self.Text.insert(END, line + '\n')
@@ -153,11 +158,17 @@ class Application(Application_ui):
     def open_help_url(self, event=None):
         self.open_url("https://www.bilibili.com/video/BV1gZ4y1K7Y9")
 
+    def open_dokimod(self, event=None):
+        self.open_url("https://dokimod.cn")
+    
+    def open_about(self, event=None):
+        showinfo("关于 Excel2DDLCMod", "Excel2DDLCMod 0.1 Alpha\n基于凉宫春日应援团的 Excel2RpyScript 开发\n由 DokiMod 为 DDLC Mod 制作二次开发\n目前为实验版本")
+
     def check_for_update(self, event=None):
         try:
             resp = requests.get("https://api.github.com/repos/HaruhiFanClub/Excel2RpyScript/releases/latest", timeout=2).json()
         except Exception as ex:
-            self.Text.insert(END, "检查更新失败：{}\n请直接到https://github.com/HaruhiFanClub/Excel2RpyScript/releases查看最新版本\n")
+            self.Text.insert(END, "检查更新失败力，，，\n试试前往 https://github.com/DokiMod/Excel2DDLCMod/releases 查看最新版本？\n")
             showinfo("网络连接失败", "\n检查新版本信息失败!\n".format(ex))
             return
         if resp['tag_name'] == CURRENT_VERSION:

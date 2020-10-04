@@ -5,7 +5,8 @@
 from corelib.exception import RenderException
 from model import RpyElement
 
-ROLE_TEMPLATE = "define {name} = Character('{role}', color=\"{color}\")"  # 角色模板
+# ROLE_TEMPLATE = "define {name} = Character('{role}', color=\"{color}\")"  # 角色模板
+ROLE_TEMPLATE = ""  # 角色模板
 
 
 # 对话
@@ -55,6 +56,10 @@ class Role(RpyElement):
     def render(self):
         if not self.name:
             return ""
+        if self.name == "n" or self.name == "Natsuki" or self.name == "夏树":
+            self.pronoun = "n"
+        if self.name == "s" or self.name == "Sayori" or self.name == "纱世里":
+            self.pronoun = "s"
         return ROLE_TEMPLATE.format(name=self.pronoun, role=self.name, color=self.color)
 
 
@@ -127,9 +132,9 @@ class Audio(RpyElement):
             self.name = str(name)
         else:
             self.name = name
-        if self.name.split(".")[-1].lower() != 'mp3':
-            self.name += ".mp3"
-        self.name = "audio/" + self.name
+        # if self.name.split(".")[-1].lower() != 'mp3':
+        #     self.name += ".mp3"
+        # self.name = "audio/" + self.name
         self.cmd = cmd
         self.fadeout = args.get("fadeout", 0.5)
         self.fadein = args.get("fadein", 0.5)
@@ -137,7 +142,7 @@ class Audio(RpyElement):
 
     # 循环播放音乐
     def play(self):
-        return "play music \"{}\"".format(self.name)
+        return "play music {}".format(self.name)
 
     # 用于旧音乐的淡出和新音乐的淡入
     def fade(self):

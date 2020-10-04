@@ -6,9 +6,9 @@ class RpyFileWriter(object):
         with open(output_path, 'w', encoding='utf-8') as f:
             for k, v in role_name_mapping.items():
                 f.write(v.render() + "\n")
-            f.write("define narrator_nvl = Character(None, kind=nvl)\n")
-            f.write("define narrator_adv = Character(None, kind=adv)\n")
-            f.write("define config.voice_filename_format = \"audio/{filename}\"\n")
+            # f.write("define narrator_nvl = Character(None, kind=nvl)\n")
+            # f.write("define narrator_adv = Character(None, kind=adv)\n")
+            # f.write("define config.voice_filename_format = \"audio/{filename}\"\n")
             f.write("\nlabel {}:\n".format(res.label))
             last_voice = None
             for rpy_element in res.data:
